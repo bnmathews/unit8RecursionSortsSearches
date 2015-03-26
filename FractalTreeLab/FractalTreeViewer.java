@@ -14,7 +14,7 @@ public class FractalTreeViewer implements ActionListener
     private final int WIDTH = 400;
     private final int HEIGHT = 500;
 
-    private final int MIN = 1, MAX = 100;
+    private final int MIN = 1, MAX = 50;
 
     private JButton increase, decrease;
     private JLabel titleLabel, orderLabel;
@@ -75,16 +75,14 @@ public class FractalTreeViewer implements ActionListener
         frame.setSize(WIDTH, HEIGHT);
         frame.add(panel);
         frame.setVisible(true);
-        while(true)
+        
+        int order = drawing.getOrder();
+        while (order >= MIN && order <= MAX)
         {
-            int order = drawing.getOrder();
-            if (order >= MIN && order <= MAX)
-            {
-                order++;
-                drawing.setOrder(order);
-                Thread.sleep(200);
-                frame.repaint();
-            }
+            order++;
+            drawing.setOrder(order);
+            Thread.sleep(100);
+            frame.repaint();
         }
     }
 

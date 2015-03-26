@@ -35,28 +35,30 @@ public class TreePanel extends JPanel
    //  intermediate points are computed, and each line segment is
    //  drawn as a fractal.
    //-----------------------------------------------------------------
-   public void drawFractal (int order, int x1, int y1, int x2, int y2,
+   public void drawFractal (int order, int x, int y, int x2, int y2, int lastAng,
+   
                             Graphics page)
    {
-      int deltaX;
-      int deltaY = 0;
-      page.drawLine (x1, y1, x2, y2);
-      page.drawLine (x1, y1, x2, y2);
-
+      double len = Math.sqrt(Math.pow((y2-y),2)+Math.pow((x2-x),2)); 
+      System.out.println(len);
+      
+      int lX = x + (int)(len*.8*Math.sin(Math.toRadians(lastAng-50)));
+      int lY = y - (int)(len*.8*Math.cos(Math.toRadians(lastAng-50)));
+      
+      int rX = x + (int)(len*.8*Math.sin(Math.toRadians(lastAng+50)));
+      int rY = y - (int)(len*.8*Math.sin(Math.toRadians(lastAng+50)));
+      
+      page.drawLine (x, y, x2, y2);
       if (order == 1)
-        {
-            page.drawLine (x1, y1, x2, y2);
-            page.drawLine (x1-(2*x1), y1, x2, y2);
-        }                         
+      {
+         page.drawLine (x, y, x2, y2); //draw the first line
+      }                         
       else
       {
-         deltaX = x2 - x1;  // distance between end points
-         deltaY = y2 - y1;
-
-         //x2 = x1 + deltaX / 2;
-         //y2 = y1 + deltaY / 2;
-
-         drawFractal (order-1, x1 + 5, deltaY / 2, x1, y1, page);
+         page.drawLine (lX, lY, x, y);
+         page.drawLine (rX, rY, x, y);
+         drawFractal (order-1, lX, lY, x, y, lastAng-50, page);
+         drawFractal (order-1, rX, rY, x, y, lastAng+50, page);
       }
    }
 
@@ -69,7 +71,7 @@ public class TreePanel extends JPanel
 
       page.setColor (Color.green);
 
-      drawFractal (current, TOPX, TOPY, BOTTOMX, BOTTOMY, page);
+      drawFractal (current, TOPX, TOPY, BOTTOMX, BOTTOMY, 0, page);
    }
 
    //-----------------------------------------------------------------
