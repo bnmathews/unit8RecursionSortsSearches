@@ -16,10 +16,10 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
 
     private final int MIN = 1, MAX = 15;
 
-    private JButton increase, decrease, animate, draw;
-    private JLabel titleLabel, orderLabel;
+    private JButton increase, decrease, animate, stop, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10;
+    private JLabel titleLabel, statusLabel, orderLabel, modLabel;
     private TreePanel drawing;
-    private JPanel panel, tools;
+    private JPanel panel, tools, tools2;
     private JFrame frame;
 
     private int mod;
@@ -34,7 +34,7 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
     
     private String mode;
     
-    private boolean[] modStatus = new boolean[8];
+    private boolean[] modStatus = new boolean[10];
     
     
     //-----------------------------------------------------------------
@@ -49,44 +49,173 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
     public FractalTreeViewer()
     throws InterruptedException
     {
-        mode = "Drawing";
+        mode = "Still";
         
-        boolean[] modStatus = {false,false,false,false,false,false,false,false};
-        System.out.println(modStatus[1]);
+        boolean[] modStatus = {false,false,false,false,false,false,false,false,false,false};
         
-        tools = new JPanel ();
-        tools.setLayout (new BoxLayout(tools, BoxLayout.X_AXIS));
-        tools.setBackground (Color.yellow);
-        tools.setOpaque (true);
-
+        tools = new JPanel();
+        tools.setLayout (new BoxLayout(tools,BoxLayout.Y_AXIS));
+        tools.setOpaque (false);
+       
+        tools2 = new JPanel();
+        tools2.setOpaque (false);
+        
         titleLabel = new JLabel ("Fractal Tree");
-        titleLabel.setForeground (Color.black);
+        titleLabel.setForeground (Color.white);
         
-        animate = new JButton (new ImageIcon ("increase.gif"));
-        animate.setPressedIcon (new ImageIcon ("increasePressed.gif"));
+        statusLabel = new JLabel ("Current Mode: " + mode);
+        statusLabel.setForeground (Color.white);
+        
+        animate = new JButton (new ImageIcon ("anim.gif"));
+        animate.setSelectedIcon( new ImageIcon ("anim_on.gif"));
+        animate.setSelected(false);
+        animate.setBorder(null);
+        animate.setContentAreaFilled(false);
+        animate.setPressedIcon (new ImageIcon ("anim_down.gif"));
         animate.setMargin (new Insets (0, 0, 0, 0));
         animate.addActionListener (this);
-        draw = new JButton (new ImageIcon ("draw.gif"));
-        draw.setSelectedIcon( new ImageIcon ("draw_on.gif"));
-        draw.setSelected(true);
-        draw.setPressedIcon (new ImageIcon ("decreasePressed.gif"));
-        draw.setMargin (new Insets (0, 0, 0, 0));
-        draw.addActionListener (this);
+        
+        stop = new JButton (new ImageIcon ("stop.gif"));
+        stop.setSelectedIcon( new ImageIcon ("stop_on.gif"));
+        stop.setSelected(true);
+        stop.setBorder(null);
+        stop.setContentAreaFilled(false);
+        stop.setPressedIcon (new ImageIcon ("stop_down.gif"));
+        stop.setMargin (new Insets (0, 0, 0, 0));
+        stop.addActionListener (this);
+        
+        m1 = new JButton (new ImageIcon ("checkbox.gif"));
+        m1.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m1.setSelected(false);
+        m1.setBorder(null);
+        m1.setContentAreaFilled(false);
+        m1.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m1.setMargin (new Insets (0, 0, 0, 0));
+        m1.setActionCommand("0");
+        m1.addActionListener (this);
+        
+        m2 = new JButton (new ImageIcon ("checkbox.gif"));
+        m2.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m2.setSelected(false);
+        m2.setBorder(null);
+        m2.setContentAreaFilled(false);
+        m2.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m2.setMargin (new Insets (0, 0, 0, 0));
+        m2.setActionCommand("1");
+        m2.addActionListener (this);
+        
+        m3 = new JButton (new ImageIcon ("checkbox.gif"));
+        m3.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m3.setSelected(false);
+        m3.setBorder(null);
+        m3.setContentAreaFilled(false);
+        m3.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m3.setMargin (new Insets (0, 0, 0, 0));
+        m3.setActionCommand("2");
+        m3.addActionListener (this);
 
-        orderLabel = new JLabel ("Order: 1");
-        orderLabel.setForeground (Color.black);
+        m4 = new JButton (new ImageIcon ("checkbox.gif"));
+        m4.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m4.setSelected(false);
+        m4.setBorder(null);
+        m4.setContentAreaFilled(false);
+        m4.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m4.setMargin (new Insets (0, 0, 0, 0));
+        m4.setActionCommand("3");
+        m4.addActionListener (this);
+        
+        m5 = new JButton (new ImageIcon ("checkbox.gif"));
+        m5.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m5.setSelected(false);
+        m5.setBorder(null);
+        m5.setContentAreaFilled(false);
+        m5.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m5.setMargin (new Insets (0, 0, 0, 0));
+        m5.setActionCommand("4");
+        m5.addActionListener (this);
+        
+        m6 = new JButton (new ImageIcon ("checkbox.gif"));
+        m6.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m6.setSelected(false);
+        m6.setBorder(null);
+        m6.setContentAreaFilled(false);
+        m6.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m6.setMargin (new Insets (0, 0, 0, 0));
+        m6.setActionCommand("5");
+        m6.addActionListener (this);
 
+        m7 = new JButton (new ImageIcon ("checkbox.gif"));
+        m7.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m7.setSelected(false);
+        m7.setBorder(null);
+        m7.setContentAreaFilled(false);
+        m7.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m7.setMargin (new Insets (0, 0, 0, 0));
+        m7.setActionCommand("6");
+        m7.addActionListener (this);
+        
+        m8 = new JButton (new ImageIcon ("checkbox.gif"));
+        m8.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m8.setSelected(false);
+        m8.setBorder(null);
+        m8.setContentAreaFilled(false);
+        m8.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m8.setMargin (new Insets (0, 0, 0, 0));
+        m8.setActionCommand("7");
+        m8.addActionListener (this);
+        
+        m9 = new JButton (new ImageIcon ("checkbox.gif"));
+        m9.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m9.setSelected(false);
+        m9.setBorder(null);
+        m9.setContentAreaFilled(false);
+        m9.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m9.setMargin (new Insets (0, 0, 0, 0));
+        m9.setActionCommand("8");
+        m9.addActionListener (this);
+        
+        m10 = new JButton (new ImageIcon ("checkbox.gif"));
+        m10.setSelectedIcon( new ImageIcon ("checkbox_on.gif"));
+        m10.setSelected(false);
+        m10.setBorder(null);
+        m10.setContentAreaFilled(false);
+        m10.setPressedIcon (new ImageIcon ("checkbox_down.gif"));
+        m10.setMargin (new Insets (0, 0, 0, 0));
+        m10.setActionCommand("9");
+        m10.addActionListener (this);
+        
+        orderLabel = new JLabel ("Iteration: 1");
+        orderLabel.setForeground (Color.white);
+
+        modLabel = new JLabel ("Mods Enabled: none");
+        modLabel.setForeground (Color.white);
+        
         tools.add (titleLabel);
-        tools.add (Box.createHorizontalStrut (20));
-        tools.add (animate);
-        tools.add (draw);
-        tools.add (Box.createHorizontalStrut (20));
+        tools.add (statusLabel);
+        tools.add (modLabel);
         tools.add (orderLabel);
+        
+        tools2.add (Box.createHorizontalStrut (500));
+        tools2.add(animate);
+        tools2.add(stop);
+        tools2.add(m1);
+        tools2.add(m2);
+        tools2.add(m3);
+        tools2.add(m4);
+        tools2.add(m5);
+        tools2.add(m6);
+        tools2.add(m7);
+        tools2.add(m8);
+        tools2.add(m9);
+        tools2.add(m10);
+        //tools2.add (Box.createHorizontalStrut (20));
 
         drawing = new TreePanel(1);
 
         panel = new JPanel();
+        panel.setBackground(Color.black);
         panel.add (tools);
+        panel.add (tools2);
         panel.add (drawing);
         panel.addMouseListener(this); //since our class is already a MouseListener, we can add it here
         panel.addMouseMotionListener(this);
@@ -103,12 +232,38 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
             if(mode.equals("Animation"))
             {
                 int order = drawing.getOrder();
-                drawing.setStuff (order,mod,modStatus);
                 mod++;
+                drawing.setStuff (order,mod,updateModStatus());
+                Thread.sleep(10);
                 frame.repaint();
-                Thread.sleep(5);
             }
         }
+    }
+    
+    private boolean[] updateModStatus()
+    {
+        return modStatus;
+    }
+    
+    private String getMods()
+    {
+        String modList = "";
+        for (int i = 0; i < modStatus.length; i++)
+        {
+            if (modStatus[i] == true)
+            {
+                if (i != 0)
+                {
+                    modList += " "+(i+1);
+                }
+                else
+                {
+                    modList += i+1;
+                }
+            }
+        }
+        
+        return modList;
     }
 
     //-----------------------------------------------------------------
@@ -117,17 +272,42 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
     //-----------------------------------------------------------------
     public void actionPerformed (ActionEvent e)
     {
-        
         if (e.getSource() == animate)
         {
-            draw.setSelected(false);
+            stop.setSelected(false);
+            animate.setSelected(true);
             mode = "Animation";
         }
-        else
+        else if (e.getSource() == stop)
         {
-            draw.setSelected(true);
-            mode = "Drawing";
+            stop.setSelected(true);
+            animate.setSelected(false);
+            mode = "Still";
         }
+        else if (e.getSource() == m1 || e.getSource() == m2 || e.getSource() == m3 || e.getSource() == m4
+        || e.getSource() == m5 || e.getSource() == m6 || e.getSource() == m7 || e.getSource() == m8
+        || e.getSource() == m9)
+        {
+            JButton btn = ((JButton)e.getSource());
+            if (!btn.isSelected())
+            {
+                btn.setSelected(true);
+                String btnName = btn.getActionCommand();
+                int modNumber = Integer.parseInt(btnName);
+                modStatus[modNumber] = true;
+                System.out.println("Modifier " + modNumber + " is on!");
+            }
+            else
+            {
+                String btnName = btn.getActionCommand();
+                int modNumber = Integer.parseInt(btnName);
+                modStatus[modNumber] = false;
+                btn.setSelected(false);
+                System.out.println("Modifier " + modNumber + " is off!");
+            }
+        }
+        statusLabel.setText ("Current Mode: " + mode);
+        modLabel.setText ("Mods Enabled: " + getMods());
     }
     
     public void mouseMoved(MouseEvent e)
@@ -137,75 +317,72 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
 
     public void mouseDragged(MouseEvent e)
     {
-        if(mode.equals("Drawing"))
-        {
-            int order = drawing.getOrder();
-            if (buttonPressed == e.BUTTON1)
-                {
-                int y = (int)e.getPoint().getY();
-                if (updates == 1)
+        int order = drawing.getOrder();
+        if (buttonPressed == e.BUTTON1)
+            {
+            int y = (int)e.getPoint().getY();
+            if (updates == 1)
+            {
+                previousY = y;
+                order++;
+            }
+            
+            if (y < previousY)
+            {
+                if (updates % 2 == 0)
                 {
                     previousY = y;
-                    order++;
                 }
-                
-                if (y < previousY)
-                {
-                    if (updates % 2 == 0)
-                    {
-                        previousY = y;
-                    }
-                    order++;
-                }
-                else
-                {
-                    if (updates % 2 == 0)
-                    {
-                        previousY = y;
-                    }
-                    order--;
-                }
-        
-                if (order >= MIN && order <= MAX)
-                {
-                    orderLabel.setText ("Order: " + order);
-                    drawing.setStuff (order,mod,modStatus);
-                    frame.repaint();
-                }
+                order++;
             }
             else
             {
-                int x = (int)e.getPoint().getX();
-                
-                if (updates == 1)
+                if (updates % 2 == 0)
                 {
-                    previousX = x;
+                    previousY = y;
                 }
-                
-                if (x < previousX)
-                {
-                    if (updates % 2 == 0)
-                    {
-                        previousX = x;
-                    }
-                    mod++;
-                }
-                else
-                {
-                    if (updates % 2 == 0)
-                    {
-                        previousX = x;
-                    }
-                    mod--;
-                }
-        
-                orderLabel.setText ("Order: " + order);
+                order--;
+            }
+    
+            if (order >= MIN && order <= MAX)
+            {
+                orderLabel.setText ("Iteration: " + order);
                 drawing.setStuff (order,mod,modStatus);
                 frame.repaint();
             }
-            
-            updates++;
         }
+        else
+        {
+            int x = (int)e.getPoint().getX();
+            
+            if (updates == 1)
+            {
+                previousX = x;
+            }
+            
+            if (x < previousX)
+            {
+                if (updates % 2 == 0)
+                {
+                    previousX = x;
+                }
+                mod++;
+            }
+            else
+            {
+                if (updates % 2 == 0)
+                {
+                    previousX = x;
+                }
+                mod--;
+            }
+    
+            orderLabel.setText ("Iteration: " + order);
+            drawing.setStuff (order,mod,modStatus);
+            frame.repaint();
+        }
+        
+        updates++;
     }
 
     public void mouseClicked(MouseEvent e)

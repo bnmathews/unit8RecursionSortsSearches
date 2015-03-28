@@ -21,7 +21,7 @@ public class TreePanel extends JPanel
    
    private int curMod = 0;
    
-   private modTracker m1, m2, m3, m4, m5, m6, m7, m8;
+   private modTracker m1, m2, m3, m4, m5, m6, m7, m8, m9, m10;
 
    public TreePanel (int currentOrder)
    {
@@ -37,6 +37,8 @@ public class TreePanel extends JPanel
       m6 = new modTracker();
       m7 = new modTracker();
       m8 = new modTracker();
+      m9 = new modTracker();
+      m10 = new modTracker();
    }
    
    public class modTracker
@@ -45,7 +47,6 @@ public class TreePanel extends JPanel
        public modTracker()
        {
            enabled = false;
-           System.out.println("Mod tracker initialized in a non-enabled state");
        }
        public int fillValue(int mod)
        {
@@ -71,10 +72,10 @@ public class TreePanel extends JPanel
       double len = Math.sqrt(Math.pow((y2-y),2)+Math.pow((x2-x),2)); 
       
       int lX = x + m1.fillValue(mod) + (int)(len*.8*Math.sin(Math.toRadians(lastAng-30 + m2.fillValue(mod) )));
-      int lY = y + m3.fillValue(mod) - (int)(len*.8*Math.cos(Math.toRadians(lastAng-30 + m4.fillValue(mod) )));
+      int lY = y + - (int)(len*.8*Math.cos(Math.toRadians(lastAng-30 + m3.fillValue(mod) )));
       
-      int rX = x + m5.fillValue(mod) + (int)(len*.8*Math.sin(Math.toRadians(lastAng+30 + m6.fillValue(mod))));
-      int rY = y + m7.fillValue(mod) - (int)(len*.8*Math.cos(Math.toRadians(lastAng+30 + m8.fillValue(mod))));
+      int rX = x + m4.fillValue(mod) + (int)(len*.8*Math.sin(Math.toRadians(lastAng+30 + m5.fillValue(mod))));
+      int rY = y + - (int)(len*.8*Math.cos(Math.toRadians(lastAng+30 + m7.fillValue(mod))));
       
       page.drawLine (x, y, x2, y2);
       if (order == 1)
@@ -85,8 +86,16 @@ public class TreePanel extends JPanel
       {
          page.drawLine (lX, lY, x, y);
          page.drawLine (rX, rY, x, y);
-         drawFractal (order-1, lX, lY, x, y, lastAng-20, page, mod);
-         drawFractal (order-1, rX, rY, x , y, lastAng+20, page, mod);
+         if (m10.fillValue(mod) != 0)
+         {
+            drawFractal (order-1, lX, lY, x, y, lastAng-m8.fillValue(mod), page, mod);
+            drawFractal (order-1, rX, rY, x , y, lastAng+m9.fillValue(mod), page, mod);
+         }
+         else
+         {
+            drawFractal (order-1, lX, lY, x, y, lastAng-20 + m8.fillValue(mod), page, mod);
+            drawFractal (order-1, rX, rY, x , y, lastAng-20 +m9.fillValue(mod), page, mod);
+         }
       }
    }
 
@@ -118,6 +127,8 @@ public class TreePanel extends JPanel
       m6.setStatus(modStatus[5]);
       m7.setStatus(modStatus[6]);
       m8.setStatus(modStatus[7]);
+      m9.setStatus(modStatus[8]);
+      m10.setStatus(modStatus[9]);
    }
 
    //-----------------------------------------------------------------
