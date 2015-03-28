@@ -69,7 +69,7 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
         draw = new JButton (new ImageIcon ("draw.gif"));
         draw.setSelectedIcon( new ImageIcon ("draw_on.gif"));
         draw.setSelected(true);
-        draw.setPressedIcon (new ImageIcon ("draw_down.gif"));
+        draw.setPressedIcon (new ImageIcon ("decreasePressed.gif"));
         draw.setMargin (new Insets (0, 0, 0, 0));
         draw.addActionListener (this);
 

@@ -45,6 +45,7 @@ public class TreePanel extends JPanel
        public modTracker()
        {
            enabled = false;
+           System.out.println("Mod tracker initialized in a non-enabled state");
        }
        public int fillValue(int mod)
        {
