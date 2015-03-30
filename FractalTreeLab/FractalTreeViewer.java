@@ -16,7 +16,7 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
 
     private final int MIN = 1, MAX = 15;
 
-    private JButton increase, decrease, animate, stop, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10;
+    private JButton increase, decrease, animate, stop, color, epilepsy, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10;
     private JLabel titleLabel, statusLabel, orderLabel, modLabel;
     private TreePanel drawing;
     private JPanel panel, tools, tools2;
@@ -34,8 +34,11 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
     
     private String mode;
     
+    private int animSpeed = 10;
+    
     private boolean[] modStatus = new boolean[10];
     
+    private boolean epilepsyMode;
     
     //-----------------------------------------------------------------
     //  Sets up the components for the applet.
@@ -51,6 +54,8 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
     {
         mode = "Still";
         
+        epilepsyMode = false;
+        
         boolean[] modStatus = {false,false,false,false,false,false,false,false,false,false};
         
         tools = new JPanel();
@@ -65,6 +70,21 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
         
         statusLabel = new JLabel ("Current Mode: " + mode);
         statusLabel.setForeground (Color.white);
+        
+        color = new JButton (new ImageIcon ("color.gif"));
+        color.setBorder(null);
+        color.setContentAreaFilled(false);
+        color.setPressedIcon (new ImageIcon ("color_down.gif"));
+        color.setMargin (new Insets (0, 0, 0, 0));
+        color.addActionListener (this);
+        
+        epilepsy = new JButton (new ImageIcon ("epilep.gif"));
+        epilepsy.setSelectedIcon( new ImageIcon ("epilep_on.gif"));
+        epilepsy.setBorder(null);
+        epilepsy.setContentAreaFilled(false);
+        epilepsy.setPressedIcon (new ImageIcon ("epilep_down.gif"));
+        epilepsy.setMargin (new Insets (0, 0, 0, 0));
+        epilepsy.addActionListener (this);
         
         animate = new JButton (new ImageIcon ("anim.gif"));
         animate.setSelectedIcon( new ImageIcon ("anim_on.gif"));
@@ -195,7 +215,9 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
         tools.add (modLabel);
         tools.add (orderLabel);
         
-        tools2.add (Box.createHorizontalStrut (500));
+        tools2.add (Box.createHorizontalStrut (300));
+        tools2.add(color);
+        tools2.add(epilepsy);
         tools2.add(animate);
         tools2.add(stop);
         tools2.add(m1);
@@ -233,8 +255,8 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
             {
                 int order = drawing.getOrder();
                 mod++;
-                drawing.setStuff (order,mod,updateModStatus());
-                Thread.sleep(10);
+                drawing.setStuff (order,mod,updateModStatus(),epilepsyMode);
+                Thread.sleep(animSpeed);
                 frame.repaint();
             }
         }
@@ -244,6 +266,7 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
     {
         return modStatus;
     }
+    
     
     private String getMods()
     {
@@ -283,6 +306,24 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
             stop.setSelected(true);
             animate.setSelected(false);
             mode = "Still";
+        }
+        else if (e.getSource() == color)
+        {
+            drawing.makeNewColor();
+            frame.repaint();
+        }
+        else if (e.getSource() == epilepsy)
+        {
+            if (epilepsyMode == false)
+            {
+                epilepsyMode = true;
+                epilepsy.setSelected(true);
+            }
+            else
+            {
+                epilepsyMode = false;
+                epilepsy.setSelected(false);
+            }
         }
         else if (e.getSource() == m1 || e.getSource() == m2 || e.getSource() == m3 || e.getSource() == m4
         || e.getSource() == m5 || e.getSource() == m6 || e.getSource() == m7 || e.getSource() == m8
@@ -345,7 +386,7 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
             if (order >= MIN && order <= MAX)
             {
                 orderLabel.setText ("Iteration: " + order);
-                drawing.setStuff (order,mod,modStatus);
+                drawing.setStuff (order,mod,modStatus,epilepsyMode);
                 frame.repaint();
             }
         }
@@ -376,7 +417,7 @@ public class FractalTreeViewer implements ActionListener, MouseListener, MouseMo
             }
     
             orderLabel.setText ("Iteration: " + order);
-            drawing.setStuff (order,mod,modStatus);
+            drawing.setStuff (order,mod,modStatus,epilepsyMode);
             frame.repaint();
         }
         

@@ -6,7 +6,7 @@
 
 import java.awt.*;
 import javax.swing.JPanel;
-
+import java.util.Random; 
 public class TreePanel extends JPanel
 {
    private final int PANEL_WIDTH = 1000;
@@ -22,12 +22,18 @@ public class TreePanel extends JPanel
    private int curMod = 0;
    
    private modTracker m1, m2, m3, m4, m5, m6, m7, m8, m9, m10;
+   
+   private Color drawColor = Color.green;
+    
+   private boolean epilepsyMode;
 
    public TreePanel (int currentOrder)
    {
       current = currentOrder;
       setBackground (Color.black);
       setPreferredSize (new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+
+      epilepsyMode = false;
       
       m1 = new modTracker();
       m2 = new modTracker();
@@ -98,6 +104,13 @@ public class TreePanel extends JPanel
          }
       }
    }
+   
+   public void makeNewColor()
+    {
+        Random r = new Random();
+        Color newColor = new Color(r.nextInt(225-1),r.nextInt(225-1),r.nextInt(225-1));
+        drawColor = newColor;
+    }
 
    //-----------------------------------------------------------------
    //  Performs the initial calls to the drawFractal method.
@@ -106,7 +119,12 @@ public class TreePanel extends JPanel
    {
       super.paintComponent (page);
 
-      page.setColor (Color.green);
+      if (epilepsyMode == true)
+      {
+          makeNewColor();
+      }
+      
+      page.setColor (drawColor);
 
       drawFractal (current, TOPX, TOPY, BOTTOMX, BOTTOMY, 0, page, curMod);
    }
@@ -114,10 +132,12 @@ public class TreePanel extends JPanel
    //-----------------------------------------------------------------
    //  Sets the fractal order to the value specified.
    //-----------------------------------------------------------------
-   public void setStuff (int order, int mod, boolean[] modStatus)
+   public void setStuff (int order, int mod, boolean[] modStatus, boolean epilepsy)
    {
       current = order;
       curMod = mod;
+      
+      epilepsyMode = epilepsy;
       
       m1.setStatus(modStatus[0]);
       m2.setStatus(modStatus[1]);
