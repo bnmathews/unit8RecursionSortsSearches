@@ -6,10 +6,10 @@ public class BubbleSorter
         boolean sorted = false;
         while (!sorted)
         {
+            sorted = true;
             for (int i = 0; i < s.length-1; i++)
             {
                 String temp = s[i];
-                sorted = true;
                 if (temp.compareTo(s[i+1]) > 0)
                 {
                     s[i] = s[i+1];
@@ -22,7 +22,7 @@ public class BubbleSorter
     
     public static void main(String[] args)
     {
-        String[] str = {"z","y","x","w","v","u","t"};
+        String[] str = {"ffdsf","afasfaew","feafaew","fzvze","ghtbf","fthf","ngyjcs"};
         System.out.println(Arrays.toString(str));
         sort(str);
         System.out.println(Arrays.toString(str));
